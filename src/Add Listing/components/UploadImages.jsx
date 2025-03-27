@@ -1,5 +1,6 @@
 import React from "react";
 import { IoMdCloseCircle } from "react-icons/io";
+import PropTypes from "prop-types";
 
 const sanitizeFilename = (name) => {
   return name
@@ -12,7 +13,7 @@ const sanitizeFilename = (name) => {
 const ALLOWED_MIME_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const MAX_FILE_SIZE_MB = 5;
 
-function UploadImages({ selectedFiles, setSelectedFiles, isUploading }) {
+function UploadImages({ selectedFiles, setSelectedFiles, isUploading, existingImages }) {
   const onFileSelected = (event) => {
     const files = Array.from(event.target.files);
     const validFiles = files.filter((file) => ALLOWED_MIME_TYPES.includes(file.type) && file.size <= MAX_FILE_SIZE_MB * 1024 * 1024);
@@ -33,6 +34,12 @@ function UploadImages({ selectedFiles, setSelectedFiles, isUploading }) {
       <h2 className="text-2xl font-semibold mb-6">Upload Car Images</h2>
 
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        {existingImages?.map((imageUrl, index) => (
+          <div key={`existing-${index}`} className="relative group">
+            <img src={imageUrl} alt="Existing" className="w-full h-32 object-cover rounded-lg border-2 border-gray-200" />
+          </div>
+        ))}
+
         {selectedFiles.map((image, index) => (
           <div key={index} className="relative group">
             <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -58,5 +65,12 @@ function UploadImages({ selectedFiles, setSelectedFiles, isUploading }) {
     </div>
   );
 }
+
+UploadImages.propTypes = {
+  selectedFiles: PropTypes.array,
+  setSelectedFiles: PropTypes.func,
+  isUploading: PropTypes.bool,
+  existingImages: PropTypes.array,
+};
 
 export default UploadImages;

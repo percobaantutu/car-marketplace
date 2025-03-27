@@ -74,7 +74,9 @@ function MyListing() {
                     }}
                   />
                   <div className="mt-2 w-full flex justify-between gap-2">
-                    <Button className="bg-slate-300 w-full">Edit</Button>
+                    <Link to={`/addlisting?mode=edit&id=${car.id}`} className="w-full">
+                      <Button className="bg-slate-300 w-full">Edit</Button>
+                    </Link>
                     <Button className="bg-red-500">
                       <FaTrashCan />
                     </Button>

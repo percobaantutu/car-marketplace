@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input";
 import React from "react";
 import PropTypes from "prop-types"; // Add prop-type validation
 
-function InputField({ item, onChange }) {
+function InputField({ item, onChange, value }) {
   // Changed prop name to onChange
   return (
     <div className="w-full">
@@ -10,6 +10,7 @@ function InputField({ item, onChange }) {
         type={item?.fieldType || "text"}
         name={item?.name}
         required={item?.required}
+        value={value}
         onChange={(e) => onChange(e.target.value)}
         className="w-full p-3 rounded-lg border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
         placeholder={item?.placeholder}

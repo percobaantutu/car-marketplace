@@ -1,5 +1,5 @@
 import Header from "@/components/Header";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import carDetails from "@/Shared/carDetails.json";
 import InputField from "./components/InputField";
 import DropdownField from "./components/DropdownField";
@@ -18,6 +18,8 @@ import UploadImages from "./components/UploadImages";
 import { supabase } from "./../../configs/supabase";
 import { useNavigate } from "react-router";
 import { useUser } from "@clerk/clerk-react";
+import { useSearchParams } from "react-router";
+import { eq } from "drizzle-orm";
 
 // Add this right after your imports
 const sanitizeFilename = (name) => {
@@ -29,6 +31,10 @@ const sanitizeFilename = (name) => {
 };
 
 function AddListing() {
+  const [searchParams] = useSearchParams();
+  const isEditMode = searchParams.get("mode") === "edit";
+  const carId = searchParams.get("id");
+  const [existingImages, setExistingImages] = useState([]);
   const { toast } = useToast();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({});
@@ -64,50 +70,96 @@ function AddListing() {
     }
   };
 
+  useEffect(() => {
+    if (isEditMode) {
+      const fetchCarData = async () => {
+        try {
+          const result = await db.select().from(CarListing).where(eq(CarListing.id, carId)).leftJoin(CarImages, eq(CarListing.id, CarImages.car_id));
+
+          const carData = result[0].car_listing;
+          const images = result.map((row) => row.car_images?.image_url).filter(Boolean);
+
+          setFormData(carData);
+          setFeaturesData(carData.features || {});
+          setExistingImages(images);
+        } catch (error) {
+          toast({ title: "Error", description: "Failed to load listing", variant: "destructive" });
+        }
+      };
+      fetchCarData();
+    }
+  }, [isEditMode, carId]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsUploading(true);
     setSubmitError(null);
 
     try {
-      // 1. Create main car listing
-      const [newCar] = await db
-        .insert(CarListing)
-        .values({
-          ...formData,
-          features: featuresData,
-          created_by: user.primaryEmailAddress.emailAddress,
-          created_at: new Date(),
-        })
-        .returning();
+      if (isEditMode) {
+        // UPDATE existing listing
+        await db
+          .update(CarListing)
+          .set({ ...formData, features: featuresData })
+          .where(eq(CarListing.id, carId));
 
-      // 2. Upload images and create image records
-      const imageUrls = await handleImageUpload(selectedFiles, newCar.id);
+        // Handle images (delete old ones if new files added)
+        if (selectedFiles.length > 0) {
+          await db.delete(CarImages).where(eq(CarImages.car_id, carId));
+          const newUrls = await handleImageUpload(selectedFiles, carId);
+          await db.insert(CarImages).values(
+            newUrls.map((url) => ({
+              car_id: carId,
+              image_url: url,
+            }))
+          );
+        }
 
-      await db.insert(CarImages).values(
-        imageUrls.map((url) => ({
-          car_id: newCar.id,
-          image_url: url,
-        }))
-      );
+        toast({ title: "Updated!", description: "Listing updated successfully", variant: "success" });
+        navigate("/profile");
+      } else {
+        // Existing CREATE logic (keep your original code here)
+        try {
+          // 1. Create main car listing
+          const [newCar] = await db
+            .insert(CarListing)
+            .values({
+              ...formData,
+              features: featuresData,
+              created_by: user.primaryEmailAddress.emailAddress,
+              created_at: new Date(),
+            })
+            .returning();
 
-      toast({
-        title: "Listing Created",
-        description: "Your car listing has been successfully published!",
-        variant: "success",
-      });
+          // 2. Upload images and create image records
+          const imageUrls = await handleImageUpload(selectedFiles, newCar.id);
 
-      // Reset form
-      setFormData({});
-      setFeaturesData({});
-      setSelectedFiles([]);
-      navigate("/profile");
-    } catch (error) {
-      toast({
-        title: "Submission Failed",
-        description: error.message || "Failed to create listing. Please try again.",
-        variant: "destructive",
-      });
+          await db.insert(CarImages).values(
+            imageUrls.map((url) => ({
+              car_id: newCar.id,
+              image_url: url,
+            }))
+          );
+
+          toast({
+            title: "Listing Created",
+            description: "Your car listing has been successfully published!",
+            variant: "success",
+          });
+
+          // Reset form
+          setFormData({});
+          setFeaturesData({});
+          setSelectedFiles([]);
+          navigate("/profile");
+        } catch (error) {
+          toast({
+            title: "Submission Failed",
+            description: error.message || "Failed to create listing. Please try again.",
+            variant: "destructive",
+          });
+        }
+      }
     } finally {
       setIsUploading(false);
     }
@@ -125,7 +177,7 @@ function AddListing() {
     <div>
       <Header />
       <div className="px-10 md:px-20 my-10">
-        <h2 className="font-bold text-4xl">Add New Listing</h2>
+        <h2 className="font-bold text-4xl">{isEditMode ? "Edit Listing" : "Add New Listing"}</h2>
         <form onSubmit={handleSubmit} className="p-10 border rounded-xl mt-6">
           {/* Car Details Section */}
           <h2 className="font-medium text-xl mb-6">Car Details</h2>
@@ -137,11 +189,11 @@ function AddListing() {
                   {item.label} {item.required && <span className="text-red-500">*</span>}
                 </label>
                 {item.fieldType === "text" || item.fieldType === "number" ? (
-                  <InputField item={item} onChange={(value) => handleInputChange(item.name, value)} />
+                  <InputField item={item} onChange={(value) => handleInputChange(item.name, value)} value={formData[item.name] || ""} />
                 ) : item.fieldType === "dropdown" ? (
-                  <DropdownField item={item} onChange={(value) => handleInputChange(item.name, value)} />
+                  <DropdownField item={item} onChange={(value) => handleInputChange(item.name, value)} value={formData[item.name] || ""} />
                 ) : item.fieldType === "textarea" ? (
-                  <TextAreaField item={item} onChange={(value) => handleInputChange(item.name, value)} />
+                  <TextAreaField item={item} onChange={(value) => handleInputChange(item.name, value)} value={formData[item.name] || ""} />
                 ) : null}
               </div>
             ))}
@@ -156,7 +208,7 @@ function AddListing() {
               <div key={item.id || item.name}>
                 {item.fieldType === "checkbox" && (
                   <div className="flex items-center gap-2">
-                    <Checkbox onCheckedChange={(value) => handleFeaturesChange(item.name, value)} />
+                    <Checkbox onCheckedChange={(value) => handleFeaturesChange(item.name, value)} checked={featuresData[item.name] || false} />
                     <h2>{item.label}</h2>
                   </div>
                 )}
@@ -167,7 +219,7 @@ function AddListing() {
           <Separator className="my-10" />
 
           {/* Image Upload Section */}
-          <UploadImages selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} isUploading={isUploading} />
+          <UploadImages selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} isUploading={isUploading} existingImages={existingImages} />
 
           {/* Submit Section */}
           <div className="flex justify-end p-2 mt-8">

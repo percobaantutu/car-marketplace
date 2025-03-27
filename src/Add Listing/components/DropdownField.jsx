@@ -2,13 +2,14 @@ import React from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import PropTypes from "prop-types"; // Add prop-type validation
 
-function DropdownField({ item, onChange }) {
+function DropdownField({ item, onChange, value }) {
   // Changed prop name to onChange
   return (
     <div className="w-full">
       <Select
         onValueChange={(value) => onChange(value)} // Simplified parameter
         required={item.required}
+        value={value}
       >
         <SelectTrigger className="w-full rounded-lg h-12">
           <SelectValue placeholder={item.placeholder || `Select ${item.label}`} />
