@@ -176,9 +176,9 @@ function AddListing() {
   return (
     <div>
       <Header />
-      <div className="px-10 md:px-20 my-10">
+      <div className=" px-5 md:px-20 my-10">
         <h2 className="font-bold text-4xl">{isEditMode ? "Edit Listing" : "Add New Listing"}</h2>
-        <form onSubmit={handleSubmit} className="p-10 border rounded-xl mt-6">
+        <form onSubmit={handleSubmit} className="p-5 md:p-10 border rounded-xl mt-6">
           {/* Car Details Section */}
           <h2 className="font-medium text-xl mb-6">Car Details</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
