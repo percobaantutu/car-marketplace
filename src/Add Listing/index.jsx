@@ -127,6 +127,8 @@ function AddListing() {
               ...formData,
               features: featuresData,
               created_by: user.primaryEmailAddress.emailAddress,
+              user_name: user?.fullName || "Anonymous",
+              user_image_url: user?.imageUrl,
               created_at: new Date(),
             })
             .returning();

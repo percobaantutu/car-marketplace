@@ -18,6 +18,8 @@ export const CarListing = pgTable("car_listing", {
   transmission: varchar("transmission").notNull(),
   color: varchar("color").notNull(),
   created_by: varchar("created_by").notNull(),
+  user_name: varchar("user_name").notNull().default("Anonymous"),
+  user_image_url: varchar("user_image_url"),
   created_at: timestamp("created_at").defaultNow().notNull(),
   updated_at: timestamp("updated_at").defaultNow().notNull(),
   features: json("features"),

@@ -9,6 +9,7 @@ import Profile from "./Profile";
 import AddListing from "./Add Listing";
 import SearchByCategory from "./search/[category]/SearchByCategory";
 import SearchResults from "./search/index";
+import ListingDetails from "./listing-details/[id]";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: "/search",
     element: <SearchResults />,
+  },
+  {
+    path: "/listing-details/:id",
+    element: <ListingDetails />,
   },
 ]);
 
