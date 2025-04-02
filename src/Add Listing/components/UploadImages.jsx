@@ -50,9 +50,9 @@ function UploadImages({ selectedFiles, setSelectedFiles, isUploading, existingIm
           </div>
         ))}
 
-        <label htmlFor="upload-images" className="cursor-pointer hover:bg-blue-50 transition-colors rounded-lg border-2 border-dashed border-blue-400 flex items-center justify-center min-h-[128px]">
+        <label htmlFor="upload-images" className="cursor-pointer hover:bg-blue-50 transition-colors rounded-lg border-2 border-dashed border-green-400 flex items-center justify-center min-h-[128px]">
           <div className="text-center p-4">
-            <div className="text-3xl text-blue-500 mb-2">+</div>
+            <div className="text-3xl text-green-500 mb-2">+</div>
             <div className="text-sm text-gray-600">Click to upload images</div>
             <div className="text-xs text-gray-500 mt-1">Max {MAX_FILE_SIZE_MB}MB each</div>
           </div>
@@ -61,7 +61,7 @@ function UploadImages({ selectedFiles, setSelectedFiles, isUploading, existingIm
         <input type="file" multiple id="upload-images" className="hidden" onChange={onFileSelected} accept={ALLOWED_MIME_TYPES.join(",")} disabled={isUploading} />
       </div>
 
-      {isUploading && <div className="mt-4 text-center text-blue-600">Images will upload with form submission...</div>}
+      {isUploading && <div className="mt-4 text-center text-green-600">Images will upload with form submission...</div>}
     </div>
   );
 }

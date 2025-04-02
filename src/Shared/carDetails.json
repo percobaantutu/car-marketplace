@@ -15,7 +15,7 @@
       "fieldType": "text",
       "required": true,
       "column": 1,
-      "icon": "FaDollarSignt"
+      "icon": "FaDollarSign"
     },
     {
       "label": "Category",

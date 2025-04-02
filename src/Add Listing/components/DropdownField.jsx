@@ -11,7 +11,7 @@ function DropdownField({ item, onChange, value }) {
         required={item.required}
         value={value}
       >
-        <SelectTrigger className="w-full rounded-lg h-12">
+        <SelectTrigger className="w-full rounded-xl border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-blue-200">
           <SelectValue placeholder={item.placeholder || `Select ${item.label}`} />
         </SelectTrigger>
         <SelectContent>

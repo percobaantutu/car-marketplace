@@ -12,7 +12,7 @@ function InputField({ item, onChange, value }) {
         required={item?.required}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full p-3 rounded-lg border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+        className="w-full p-3 rounded-xl border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-blue-200"
         placeholder={item?.placeholder}
       />
     </div>

@@ -7,7 +7,8 @@ function Header() {
   const { user, isSignedIn } = useUser();
   return (
     <div className="flex justify-between items-center p-5 shadow-md">
-      <img src="/logo.png" alt="logo" />
+      <img src="/logo.png" alt="logo" className="h-12 object-cover" />
+
       <ul className="hidden md:flex gap-16">
         <Link to="/">
           <li className="font-medium hover:scale-105 transition-all cursor-pointer">Home</li>
@@ -20,7 +21,7 @@ function Header() {
         <div className="flex gap-4">
           <UserButton></UserButton>
           <Link to="/profile">
-            <Button>Submit Listing</Button>
+            <Button className="bg-green-500">Submit Listing</Button>
           </Link>
         </div>
       ) : (

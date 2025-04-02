@@ -209,7 +209,7 @@ function AddListing() {
             {features.features.map((item) => (
               <div key={item.id || item.name}>
                 {item.fieldType === "checkbox" && (
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 ">
                     <Checkbox onCheckedChange={(value) => handleFeaturesChange(item.name, value)} checked={featuresData[item.name] || false} />
                     <h2>{item.label}</h2>
                   </div>
@@ -225,7 +225,7 @@ function AddListing() {
 
           {/* Submit Section */}
           <div className="flex justify-end p-2 mt-8">
-            <Button type="submit" disabled={isUploading || selectedFiles.length === 0} className="min-w-[200px]">
+            <Button type="submit" disabled={isUploading || selectedFiles.length === 0} className="min-w-[200px] bg-green-500">
               {isUploading ? (
                 <span className="flex items-center justify-center gap-2">
                   <span className="animate-spin">🌀</span>
