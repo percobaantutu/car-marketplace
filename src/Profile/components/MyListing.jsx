@@ -12,6 +12,7 @@ import { FaTrashCan } from "react-icons/fa6";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "./../../../configs/supabase";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import Inbox from "./Inbox";
 
 function MyListing() {
   const { user } = useUser();
@@ -71,7 +72,7 @@ function MyListing() {
       <Tabs defaultValue="my-listing" className="w-full">
         <TabsList className="grid w-full  grid-cols-2 md:grid-cols-6 bg-slate-100 gap-1 md:gap-2">
           <TabsTrigger value="my-listing">My Listing</TabsTrigger>
-          <TabsTrigger value="inbox">Inbox</TabsTrigger>
+          <TabsTrigger value="inbox">inbox</TabsTrigger>
           <TabsTrigger value="profile">Profile</TabsTrigger>
           <TabsTrigger value="" className="col-span-3"></TabsTrigger>
         </TabsList>
@@ -132,7 +133,9 @@ function MyListing() {
             </div>
           )}
         </TabsContent>
-        <TabsContent value="inbox"></TabsContent>
+        <TabsContent value="inbox">
+          <Inbox />
+        </TabsContent>
         <TabsContent value="profile"></TabsContent>
       </Tabs>
     </div>
