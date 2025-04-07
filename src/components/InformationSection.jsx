@@ -7,9 +7,9 @@ function InformationSection() {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:items-center md:gap-8">
           <div>
             <div className="max-w-lg md:max-w-none">
-              <h2 className="text-2xl font-semibold text-gray-900 sm:text-3xl">Lorem ipsum dolor sit amet consectetur adipisicing elit.</h2>
+              <h2 className="text-2xl font-semibold text-gray-900 sm:text-3xl">Loe mau jual mobil? jual di mobiLoe ajaa...</h2>
 
-              <p className="mt-4 text-gray-700">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur doloremque saepe architecto maiores repudiandae amet perferendis repellendus, reprehenderit voluptas sequi.</p>
+              <p className="mt-4 text-gray-700">Jual mobil loe di mobiLoe. Temuin orang yang mau beli mobil loe diharga yang oke. Nego teruss sampe mobil loe kejual. Seal the deal!</p>
             </div>
           </div>
 

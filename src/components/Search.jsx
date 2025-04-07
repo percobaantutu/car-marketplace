@@ -26,9 +26,9 @@ function Search() {
   };
 
   return (
-    <div className="flex bg-white rounded-xl md:rounded-full flex-col md:flex-row  p-2 md:p-5  gap-1 lg:gap-10 mx-5 items-center w-[60%]">
+    <div className="flex bg-white rounded-xl md:rounded-full flex-col md:flex-row  p-2 md:p-5  gap-2 lg:gap-10 mx-5 items-center w-full md:w-[60%]">
       <Select onValueChange={(value) => setSearchParams((prev) => ({ ...prev, cars: value }))}>
-        <SelectTrigger className="outline-none md:border-none shadow-none w-full text-lg">
+        <SelectTrigger className="outline-none md:border-none shadow-none w-full text-lg rounded-full">
           <SelectValue placeholder="Cars" />
         </SelectTrigger>
         <SelectContent>
@@ -38,7 +38,7 @@ function Search() {
       </Select>
       <Separator orientation="vertical" className="hidden md:block" />
       <Select onValueChange={(value) => setSearchParams((prev) => ({ ...prev, make: value }))}>
-        <SelectTrigger className="outline-none md:border-none shadow-none w-full text-lg">
+        <SelectTrigger className="outline-none md:border-none shadow-none w-full text-lg rounded-full">
           <SelectValue placeholder="Car Brand" />
         </SelectTrigger>
         <SelectContent>
@@ -51,7 +51,7 @@ function Search() {
       </Select>
       <Separator orientation="vertical" className="hidden md:block" />
       <Select onValueChange={(value) => setSearchParams((prev) => ({ ...prev, price: value }))}>
-        <SelectTrigger className="outline-none md:border-none shadow-none w-full text-lg">
+        <SelectTrigger className="outline-none md:border-none shadow-none w-full text-lg rounded-full">
           <SelectValue placeholder="Pricing" />
         </SelectTrigger>
         <SelectContent>
@@ -61,7 +61,7 @@ function Search() {
         </SelectContent>
       </Select>
       <Separator orientation="vertical" className="hidden md:block" />
-      <div className="p-2 text-2xl bg-black text-white rounded-full hover:scale-105 transition-all cursor-pointer" aria-label="Search">
+      <div className="p-2 text-2xl bg-black text-white rounded-full hover:scale-105 transition-all w-full cursor-pointer text-center flex justify-center" aria-label="Search">
         <CiSearch onClick={handleSearch} />
       </div>
     </div>
