@@ -9,7 +9,7 @@ import { Link } from "react-router";
 function CarItem({ car }) {
   return (
     <Link to={"/listing-details/" + car?.id} key={car?.id}>
-      <div className="rounded-xl hover:shadow-md cursor-pointer p-2 border border-slate-400 relative">
+      <div className="rounded-xl hover:shadow-md cursor-pointer p-1 md:p-2 border border-slate-400 relative">
         {car?.created_at && <h2 className="bg-red-600 text-white text-sm px-3 py-1 rounded-full absolute m-2">New</h2>}
         <img src={car?.image} alt="Car listing" width={300} height={250} className="rounded-md h-[180px] w-full object-cover" />
         <div className="mt-3">
