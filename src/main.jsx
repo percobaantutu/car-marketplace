@@ -7,9 +7,9 @@ import { Toaster } from "@/components/ui/toaster";
 import { ClerkProvider } from "@clerk/clerk-react";
 import Profile from "./Profile";
 import AddListing from "./Add Listing";
-import SearchByCategory from "./search/[category]/SearchByCategory";
+import SearchByCategory from "./search/category/SearchByCategory";
 import SearchResults from "./search/index";
-import ListingDetails from "./listing-details/[id]";
+import ListingDetails from "./listing-details/id";
 
 const router = createBrowserRouter([
   {
